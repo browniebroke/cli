@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/MakeNowJust/heredoc"
 	"github.com/cli/cli/api"
 	"github.com/cli/cli/internal/config"
 	"github.com/cli/cli/internal/ghrepo"
@@ -34,7 +35,17 @@ func NewCmdRemove(f *cmdutil.Factory, runF func(*RemoveOptions) error) *cobra.Co
 		Use:   "remove <secret-name>",
 		Short: "Remove secrets",
 		Long:  "Remove a secret for a repository, environment, or organization",
-		Args:  cobra.ExactArgs(1),
+		Example: heredoc.Doc(`
+			Remove secret for current repo
+			$ gh secret remove MYSECRET
+
+			Remove environment level secret
+			$ gh secret remove MYSECRET --env=anEnv
+
+			Remove organization level secret
+			$ gh secret remove MYSECRET --org=anOrg
+`),
+		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// support `-R, --repo` override
 			opts.BaseRepo = f.BaseRepo

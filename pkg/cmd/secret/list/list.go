@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/MakeNowJust/heredoc"
 	"github.com/cli/cli/api"
 	"github.com/cli/cli/internal/config"
 	"github.com/cli/cli/internal/ghinstance"
@@ -40,7 +41,17 @@ func NewCmdList(f *cmdutil.Factory, runF func(*ListOptions) error) *cobra.Comman
 		Use:   "list",
 		Short: "List secrets",
 		Long:  "List secrets for a repository, environment, or organization",
-		Args:  cobra.NoArgs,
+		Example: heredoc.Doc(`
+			List secrets for current repo
+			$ gh secret list MYSECRET
+
+			List secrets for current repo in an environment
+			$ gh secret list MYSECRET --env=anEnv
+
+			List organization level secrets
+			$ gh secret list MYSECRET --org=anOrg
+`),
+		Args: cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// support `-R, --repo` override
 			opts.BaseRepo = f.BaseRepo
